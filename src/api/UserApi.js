@@ -4,16 +4,20 @@ export class UserApi {
    * @type {UserApi}
    * @memberof UserApi
    */
-  static instance;
+  static _instance;
 
   logTag = "[UserApi]";
 
-  get instance() {
-    if (UserApi.instance === null) {
-      UserApi.instance = new UserApi();
-    }
+  /**
+   * @readonly
+   * @static
+   * @memberof UserApi
+   * @return {UserApi}
+   */
+  static get instance() {
+    if (UserApi._instance == null) UserApi._instance = new UserApi();
 
-    return UserApi.instance;
+    return UserApi._instance;
   }
 
   _request(...rest) {
@@ -21,11 +25,12 @@ export class UserApi {
     return new Promise((res) => {
       setTimeout(() => {
         console.log(this.logTag, "requset made");
+        res({'message':"some data"});
       }, 2.5 * 1000);
     });
   }
 
   static async fetchUser(userId) {
-      return UserApi.instance._request(userId)
+    return UserApi.instance._request(userId);
   }
 }
